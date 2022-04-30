@@ -26,8 +26,8 @@ input.onButtonPressed(Button.B, function () {
 /**
  * SuperBit.MotorStopAll()
  */
-let x = 0
 let silnik = 0
+let x = 0
 const lerp = (x: number, y: number, a: number) => x * (1 - a) + y * a;
 const invlerp = (x: number, y: number, a: number) => clamp((a - x) / (y - x));
 const clamp = (a: number, min = 0, max = 1) => Math.min(max, Math.max(min, a));
@@ -40,13 +40,23 @@ const range = (
 ) => lerp(x2, y2, invlerp(x1, y1, a));
 // })
 basic.forever(function () {
-    // if (silnik) {
-    // SuperBit.MotorRun(SuperBit.enMotors.M2, 255)
-    // } else {
-    // SuperBit.MotorRun(SuperBit.enMotors.M2, 0)
-    // }
-    // 0 to 1023
+    
     x = pins.analogReadPin(AnalogPin.P1)
     const xAxis = range(0,1023,90,180 ,x)
-    basic.showNumber(xAxis)
+    SuperBit.Servo2(SuperBit.enServo.S1, xAxis)
 })
+
+basic.forever(function () {
+    
+    x = pins.analogReadPin(AnalogPin.P2)
+
+    // basic.showNumber(x)
+    
+    if(x <10) {
+        SuperBit.MotorRunDual(SuperBit.enMotors.M1, 255, SuperBit.enMotors.M2, -255)
+        } else {
+            SuperBit.MotorStopAll()
+        }
+})
+  
+
